@@ -22,7 +22,7 @@ A powerful, full-stack finance management application designed to help users tak
 * **Language:** TypeScript
 * **State Management:** Redux Toolkit
 * **Styling:** Tailwind CSS
-* **Charts:** [Chart.js / Recharts]
+* **Charts:** Chart.js / Recharts
 
 **Backend:**
 * **Runtime:** Node.js
@@ -31,7 +31,7 @@ A powerful, full-stack finance management application designed to help users tak
 * **Authentication:** JWT & Bcrypt
 
 **Tools & Services:**
-* **AI Integration:** [OpenAI API / Tesseract.js / Google Vision] (for receipt scanning)
+* **AI Integration:** OpenAI API / Tesseract.js (for receipt scanning)
 * **Version Control:** Git & GitHub
 
 ## 📂 Project Structure
@@ -50,90 +50,73 @@ Personal-Budget-App/
 │   │   ├── store/      # Redux state slices
 │   │   └── utils/      # Helper functions
 └── README.md
+```
+## 🚀 Getting Started
 
-**Archita Sarkar**
-* GitHub: [@ArchitaSarkar](https://github.com/ArchitaSarkar)
-
----
-*If you found this project useful, please give it a ⭐!*
-🚀 Getting Started
 Follow these steps to set up the project locally.
 
-Prerequisites
-Node.js (v14 or higher)
+### Prerequisites
+* **Node.js** (v14 or higher)
+* **MongoDB** (Local instance or Atlas URI)
+* **npm** or **yarn**
 
-MongoDB (Local instance or Atlas URI)
-
-npm or yarn
-
-1. Clone the Repository
+### 1. Clone the Repository
+```bash
 git clone [https://github.com/ArchitaSarkar/Personal-Budget-App.git](https://github.com/ArchitaSarkar/Personal-Budget-App.git)
-cd Personal-Budget-App
-2. Backend Setup
+```
+### 2. Backend Setup
 Navigate to the backend folder and install dependencies:
+```bash
 cd backend
 npm install
-Create a .env file in the backend/ directory:
-Code snippet
-
+```
+### Create a .env file in the backend/ directory:
+```bash
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-AI_API_KEY=your_ai_service_key  # If applicable
-Start the server:
-
-Bash
-
+AI_API_KEY=your_ai_service_key
+```
+### Start the server:
+```bash
 npm start
-3. Frontend Setup
+```
+### 3. Frontend Setup
 Open a new terminal, navigate to the frontend folder, and install dependencies:
-
-Bash
-
+```bash
 cd ../frontend
 npm install
-Start the React development server:
-
-Bash
-
+```
+### Start the React development server:
+```bash
 npm start
-The app should now be running on http://localhost:3000!
+```
+### The app should now be running on http://localhost:3000!
+## 📡 API Endpoints
 
-📸 Screenshots
-Dashboard View	Transaction List	Receipt Scanning
-(Add your actual screenshots here)		
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| **POST** | `/api/auth/register` | Register a new user |
+| **POST** | `/api/auth/login` | Login user & get token |
+| **GET** | `/api/transactions` | Get all transactions |
+| **POST** | `/api/transactions` | Add a new transaction |
+| **POST** | `/api/upload` | Upload receipt for AI analysis |
+## 🤝 Contributing
 
-Export to Sheets
-
-📡 API Endpoints
-Method	Endpoint	Description
-POST	/api/auth/register	Register a new user
-POST	/api/auth/login	Login user & get token
-GET	/api/transactions	Get all transactions
-POST	/api/transactions	Add a new transaction
-POST	/api/upload	Upload receipt for AI analysis
-
-Export to Sheets
-
-🤝 Contributing
 Contributions are welcome! Please follow these steps:
 
-Fork the project.
+1.  Fork the project.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request.
 
-Create your feature branch (git checkout -b feature/AmazingFeature).
+## 👤 Author
 
-Commit your changes (git commit -m 'Add some AmazingFeature').
+**Archita Sarkar**
+* GitHub: [@ArchitaSarkar](https://github.com/ArchitaSarkar)
+* LinkedIn: [Archita Sarkar](https://www.linkedin.com/in/archita-sarkar-010421308)
 
-Push to the branch (git push origin feature/AmazingFeature).
-
-Open a Pull Request.
-
-👤 Author
-Archita Sarkar
-
-GitHub: @ArchitaSarkar
-
-LinkedIn: Archita Sarkar
-
-⭐️ Don't forget to give this project a star if you find it useful!
+---
+*If you found this project useful, please give it a ⭐!*
 
