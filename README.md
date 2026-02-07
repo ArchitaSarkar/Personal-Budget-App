@@ -1,6 +1,5 @@
-# 💰 Personal Budget & Finance Management App
+# 💰 Finance Management App
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/Node.js-v16%2B-green)
 ![React](https://img.shields.io/badge/React-v18-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5-blue)
@@ -57,3 +56,84 @@ Personal-Budget-App/
 
 ---
 *If you found this project useful, please give it a ⭐!*
+🚀 Getting Started
+Follow these steps to set up the project locally.
+
+Prerequisites
+Node.js (v14 or higher)
+
+MongoDB (Local instance or Atlas URI)
+
+npm or yarn
+
+1. Clone the Repository
+git clone [https://github.com/ArchitaSarkar/Personal-Budget-App.git](https://github.com/ArchitaSarkar/Personal-Budget-App.git)
+cd Personal-Budget-App
+2. Backend Setup
+Navigate to the backend folder and install dependencies:
+cd backend
+npm install
+Create a .env file in the backend/ directory:
+Code snippet
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+AI_API_KEY=your_ai_service_key  # If applicable
+Start the server:
+
+Bash
+
+npm start
+3. Frontend Setup
+Open a new terminal, navigate to the frontend folder, and install dependencies:
+
+Bash
+
+cd ../frontend
+npm install
+Start the React development server:
+
+Bash
+
+npm start
+The app should now be running on http://localhost:3000!
+
+📸 Screenshots
+Dashboard View	Transaction List	Receipt Scanning
+(Add your actual screenshots here)		
+
+Export to Sheets
+
+📡 API Endpoints
+Method	Endpoint	Description
+POST	/api/auth/register	Register a new user
+POST	/api/auth/login	Login user & get token
+GET	/api/transactions	Get all transactions
+POST	/api/transactions	Add a new transaction
+POST	/api/upload	Upload receipt for AI analysis
+
+Export to Sheets
+
+🤝 Contributing
+Contributions are welcome! Please follow these steps:
+
+Fork the project.
+
+Create your feature branch (git checkout -b feature/AmazingFeature).
+
+Commit your changes (git commit -m 'Add some AmazingFeature').
+
+Push to the branch (git push origin feature/AmazingFeature).
+
+Open a Pull Request.
+
+👤 Author
+Archita Sarkar
+
+GitHub: @ArchitaSarkar
+
+LinkedIn: Archita Sarkar
+
+⭐️ Don't forget to give this project a star if you find it useful!
+
