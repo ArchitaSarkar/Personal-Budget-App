@@ -12,7 +12,7 @@ cloudinary.config({
 const STORAGE_PARAMS = {
   folder: "images",
   allowed_formats: ["jpg", "png", "jpeg"],
-  rescource_type: "image" as const,
+  resource_type: "image" as const,
   quality: "auto:good" as const,
 };
 
@@ -27,11 +27,12 @@ export const upload = multer({
   storage,
   limits: { fileSize: 2 * 1024 * 1024, files: 1 },
   fileFilter: (_, file, cb) => {
-    const isValid = /^image\/(jpe?g|png)$/.test(file.mimetype);
-    if (!isValid) {
-      return;
-    }
+  const isValid = /^image\/(jpe?g|png)$/.test(file.mimetype);
 
-    cb(null, true);
-  },
+  if (!isValid) {
+    return cb(new Error("Only JPG/PNG images allowed"));
+  }
+
+  cb(null, true);
+}
 });
