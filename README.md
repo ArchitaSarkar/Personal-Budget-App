@@ -1,95 +1,122 @@
-# 💰 Personal Budget App
+# 💰 Finance Management App
 
-![License](https://img.shields.io/github/license/ArchitaSarkar/Personal-Budget-App)
-![Issues](https://img.shields.io/github/issues/ArchitaSarkar/Personal-Budget-App)
-![Stars](https://img.shields.io/github/stars/ArchitaSarkar/Personal-Budget-App)
+![Node](https://img.shields.io/badge/Node.js-v16%2B-green)
+![React](https://img.shields.io/badge/React-v18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5-blue)
 
-**Personal Budget App** is a user-friendly application designed to help you track your income and expenses, visualize your spending habits, and stay on top of your financial goals. Whether you're saving for a vacation or just trying to manage monthly bills, this tool simplifies the process.
+A powerful, full-stack finance management application designed to help users take control of their financial health. This app goes beyond simple tracking by integrating **AI-powered receipt scanning**, **recurring transaction automation**, and **advanced analytics** to visualize spending habits.
 
-## 📱 Features
+## 🌟 Key Features
 
-* **Dashboard Overview:** View your total balance, income, and expenses at a glance.
-* **Transaction Tracking:** Easily add, edit, and delete income and expense records.
-* **Categorization:** Organize transactions by categories (e.g., Food, Rent, Entertainment).
-* **Visual Reports:** [If applicable] Charts and graphs to visualize spending trends over time.
-* **Budget Setting:** [If applicable] Set monthly limits for specific categories.
-* **Data Persistence:** [Mention if it uses LocalStorage, a Database, or Firebase].
+* **🔐 Secure Authentication:** Robust user login and registration system using **JWT (JSON Web Tokens)** for secure session management.
+* **🤖 AI-Powered Receipt Scanning:** Upload a photo of your bill, and the integrated AI automatically extracts merchant details, date, and total amount to create a transaction entry.
+* **📊 Interactive Dashboards:** Visualize your financial data with dynamic charts and graphs, powered by complex **MongoDB aggregation pipelines**.
+* **🔄 Recurring Transactions:** Set up automated entries for monthly bills (rent, subscriptions) to never miss a payment record.
+* **🏷️ Categorization:** Organize income and expenses into custom categories for better budgeting.
+* **📱 Responsive Design:** Built with **TailwindCSS** to ensure a seamless experience across desktop, tablet, and mobile devices.
 
 ## 🛠️ Tech Stack
 
 **Frontend:**
-* [e.g., React.js / HTML5 & CSS3 / Flutter / Kotlin]
-* [e.g., Tailwind CSS / Material UI]
+* **Framework:** React.js
+* **Language:** TypeScript
+* **State Management:** Redux Toolkit
+* **Styling:** Tailwind CSS
+* **Charts:** Chart.js / Recharts
 
-**Backend (if applicable):**
-* [e.g., Node.js / Python / Firebase]
+**Backend:**
+* **Runtime:** Node.js
+* **Framework:** Express.js
+* **Database:** MongoDB (Mongoose ODM)
+* **Authentication:** JWT & Bcrypt
 
-**Tools & Libraries:**
-* [e.g., Chart.js / Redux / Axios]
+**Tools & Services:**
+* **AI Integration:** OpenAI API / Tesseract.js (for receipt scanning)
+* **Version Control:** Git & GitHub
 
+## 📂 Project Structure
+
+```bash
+Personal-Budget-App/
+├── backend/          # Node.js & Express server
+│   ├── models/       # Mongoose schemas
+│   ├── routes/       # API endpoints
+│   ├── controllers/  # Request logic
+│   └── config/       # DB connections
+├── frontend/         # React & TypeScript application
+│   ├── src/
+│   │   ├── components/ # Reusable UI components
+│   │   ├── pages/      # App views (Dashboard, Login, etc.)
+│   │   ├── store/      # Redux state slices
+│   │   └── utils/      # Helper functions
+└── README.md
+```
 ## 🚀 Getting Started
 
-Follow these instructions to get a copy of the project up and running on your local machine.
+Follow these steps to set up the project locally.
 
 ### Prerequisites
+* **Node.js** (v14 or higher)
+* **MongoDB** (Local instance or Atlas URI)
+* **npm** or **yarn**
 
-* **Git**: Ensure you have Git installed.
-* **[e.g., Node.js / JDK / Python]**: Required to run the application.
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/ArchitaSarkar/Personal-Budget-App.git](https://github.com/ArchitaSarkar/Personal-Budget-App.git)
+```
+### 2. Backend Setup
+Navigate to the backend folder and install dependencies:
+```bash
+cd backend
+npm install
+```
+### Create a .env file in the backend/ directory:
+```bash
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+AI_API_KEY=your_ai_service_key
+```
+### Start the server:
+```bash
+npm start
+```
+### 3. Frontend Setup
+Open a new terminal, navigate to the frontend folder, and install dependencies:
+```bash
+cd ../frontend
+npm install
+```
+### Start the React development server:
+```bash
+npm start
+```
+### The app should now be running on http://localhost:3000!
+## 📡 API Endpoints
 
-### Installation
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/ArchitaSarkar/Personal-Budget-App.git](https://github.com/ArchitaSarkar/Personal-Budget-App.git)
-    cd Personal-Budget-App
-    ```
-
-2.  **Install dependencies:**
-    ```bash
-    # For Node/React/JS projects
-    npm install
-    # OR for Python projects
-    pip install -r requirements.txt
-    ```
-
-3.  **Configure Environment Variables:**
-    * Create a `.env` file in the root directory (if needed).
-    * Add necessary API keys or database configs:
-        ```env
-        REACT_APP_API_KEY=your_api_key_here
-        ```
-
-4.  **Run the Application:**
-    ```bash
-    # For Node/React projects
-    npm start
-    # OR for Python
-    python app.py
-    ```
-
-## 📸 Screenshots
-
-![Dashboard Screenshot](path/to/screenshot.png)
-*(Add screenshots of your app here to show users what it looks like)*
-
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| **POST** | `/api/auth/register` | Register a new user |
+| **POST** | `/api/auth/login` | Login user & get token |
+| **GET** | `/api/transactions` | Get all transactions |
+| **POST** | `/api/transactions` | Add a new transaction |
+| **POST** | `/api/upload` | Upload receipt for AI analysis |
 ## 🤝 Contributing
 
-Contributions are always welcome! If you have suggestions or find a bug, please follow these steps:
+Contributions are welcome! Please follow these steps:
 
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/YourFeatureName`).
-3.  Commit your changes (`git commit -m 'Add some feature'`).
-4.  Push to the branch (`git push origin feature/YourFeatureName`).
+1.  Fork the project.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
 5.  Open a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👤 Author
 
 **Archita Sarkar**
 * GitHub: [@ArchitaSarkar](https://github.com/ArchitaSarkar)
+* LinkedIn: [Archita Sarkar](https://www.linkedin.com/in/archita-sarkar-010421308)
 
 ---
 *If you found this project useful, please give it a ⭐!*
+
