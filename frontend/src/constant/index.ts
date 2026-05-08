@@ -22,6 +22,7 @@ export const PAYMENT_METHODS_ENUM = {
   MOBILE_PAYMENT: "MOBILE_PAYMENT",
   CASH: "CASH",
   AUTO_DEBIT: "AUTO_DEBIT",
+  UPI: "UPI",
   OTHER: "OTHER",
 } as const;
 
@@ -31,6 +32,7 @@ export const PAYMENT_METHODS = [
   { value: PAYMENT_METHODS_ENUM.BANK_TRANSFER, label: "Bank Transfer" },
   { value: PAYMENT_METHODS_ENUM.MOBILE_PAYMENT, label: "Mobile Payment" },
   { value: PAYMENT_METHODS_ENUM.AUTO_DEBIT, label: "Auto Debit" },
+  { value: PAYMENT_METHODS_ENUM.UPI, label: "UPI" },
   { value: PAYMENT_METHODS_ENUM.OTHER, label: "Other" },
 ];
 
