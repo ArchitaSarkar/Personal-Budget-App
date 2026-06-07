@@ -60,7 +60,7 @@ export const getReportEmailTemplate = (
          <td>
            <table cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
              <tr>
-               <td style="background-color: #00bc7d; padding: 20px 30px; color: #ffffff; text-align: center;">
+               <td style="background-color: #0058bc; padding: 20px 30px; color: #ffffff; text-align: center;">
                  <h2 style="margin: 0; font-size: 24px; text-transform: capitalize">${reportTitle}</h2>
                </td>
              </tr>
@@ -102,7 +102,7 @@ export const getReportEmailTemplate = (
              </tr>
              <tr>
                <td style="background-color: #f0f0f0; text-align: center; padding: 15px; font-size: 12px; color: #999;">
-                 &copy; ${currentYear} Finora. All rights reserved.
+                 &copy; ${currentYear} BudgetAlly. All rights reserved.
                </td>
              </tr>
            </table>
