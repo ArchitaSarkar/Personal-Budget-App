@@ -1,24 +1,18 @@
-import * as React from "react";
-import { cn } from "@/lib/utils"; // or your utils path
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+// Change 'function Input' to 'const Input = React.forwardRef...'
+const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (
       <input
         type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background ...",
-          className
-        )}
-        ref={ref}
+        className={cn("...", className)}
+        ref={ref} // Attach the ref here
         {...props}
       />
-    );
+    )
   }
-);
-
-Input.displayName = "Input";
-
-export { Input };
+)
+Input.displayName = "Input"
+export { Input }

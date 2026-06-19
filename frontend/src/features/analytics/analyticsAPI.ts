@@ -1,5 +1,5 @@
 import { apiClient } from "@/app/api-client";
-import { ChartAnalyticsResponse, ExpensePieChartBreakdownResponse, FilterParams, SummaryAnalyticsResponse } from "./anayticsType";
+import { ChartAnalyticsResponse, ExpensePieChartBreakdownResponse, FilterParams, SummaryAnalyticsResponse } from "./analyticsType";
 
 export const analyticsApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
