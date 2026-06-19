@@ -1,34 +1,68 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { HTTPSTATUS } from "../config/http.config";
-import { bulkDeleteTransactionSchema, bulkTransactionSchema, createTransactionSchema, transactionIdSchema, updateTransactionSchema } from "../validators/transaction.validator";
-import { bulkDeleteTransactionService, bulkTransactionService, createTransactionService,deleteTransactionService,duplicateTransactionService,getAllTransactionService,getTransactionByIdService, scanReceiptService, updateTransactionService } from "../services/transaction.service";
+import {
+  bulkDeleteTransactionSchema,
+  bulkTransactionSchema,
+  createTransactionSchema,
+  transactionIdSchema,
+  updateTransactionSchema,
+} from "../validators/transaction.validator";
+import {
+  bulkDeleteTransactionService,
+  bulkTransactionService,
+  createTransactionService,
+  deleteTransactionService,
+  duplicateTransactionService,
+  getAllTransactionService,
+  getTransactionByIdService,
+  scanReceiptService,
+  updateTransactionService,
+} from "../services/transaction.service";
 import { TransactionTypeEnum } from "../models/transaction.model";
+
+const getAuthUserId = (req: Request): string | undefined => {
+  const user: any = (req as any).user;
+  return user?.id ?? user?._id?.toString?.() ?? user?._id ?? user?.userId;
+};
+
+const parsePositiveInt = (
+  value: unknown,
+  fallback: number,
+  maxValue?: number
+): number => {
+  const parsed = parseInt(String(value), 10);
+
+  if (Number.isNaN(parsed) || parsed < 1) {
+    return fallback;
+  }
+
+  if (maxValue) {
+    return Math.min(parsed, maxValue);
+  }
+
+  return parsed;
+};
 
 export const createTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    console.log("req.user =>", (req as any).user);
-
     const parsed = createTransactionSchema.safeParse(req.body);
+
     if (!parsed.success) {
-      return res
-        .status(HTTPSTATUS.BAD_REQUEST)
-        .json({ message: "Validation failed", errors: parsed.error.flatten() });
+      return res.status(HTTPSTATUS.BAD_REQUEST).json({
+        message: "Validation failed",
+        errors: parsed.error.flatten(),
+      });
     }
 
-    // Support both during migration/debug; then standardize on .id
-    const u: any = (req as any).user;
-    const userId: string | undefined = u?.id ?? u?._id ?? u?.userId;
+    const userId = getAuthUserId(req);
+
     if (!userId) {
-      return res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: "Unauthorized" });
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
     }
 
-    console.log("create: req.user =", (req as any).user);
-console.log("create: parsed.data =", parsed.data);
-  
-    
-
-    // Inject userId into the document you save
     const transaction = await createTransactionService(parsed.data, userId);
 
     return res.status(HTTPSTATUS.CREATED).json({
@@ -38,12 +72,15 @@ console.log("create: parsed.data =", parsed.data);
   }
 );
 
-
-
-
 export const getAllTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
 
     const filters = {
       keyword: req.query.keyword as string | undefined,
@@ -54,9 +91,18 @@ export const getAllTransactionController = asyncHandler(
         | undefined,
     };
 
+    /*
+      Supports both:
+      /all?pageSize=10&pageNumber=1
+      /all?limit=10&pageNumber=1
+    */
     const pagination = {
-      pageSize: parseInt(req.query.pageSize as string) || 20,
-      pageNumber: parseInt(req.query.pageNumber as string) || 1,
+      pageSize: parsePositiveInt(
+        req.query.pageSize || req.query.limit,
+        20,
+        100
+      ),
+      pageNumber: parsePositiveInt(req.query.pageNumber, 1),
     };
 
     const result = await getAllTransactionService(userId, filters, pagination);
@@ -70,7 +116,14 @@ export const getAllTransactionController = asyncHandler(
 
 export const getTransactionByIdController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
+
     const transactionId = transactionIdSchema.parse(req.params.id);
 
     const transaction = await getTransactionByIdService(userId, transactionId);
@@ -84,7 +137,14 @@ export const getTransactionByIdController = asyncHandler(
 
 export const duplicateTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
+
     const transactionId = transactionIdSchema.parse(req.params.id);
 
     const transaction = await duplicateTransactionService(
@@ -99,25 +159,42 @@ export const duplicateTransactionController = asyncHandler(
   }
 );
 
-
 export const updateTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
+
     const transactionId = transactionIdSchema.parse(req.params.id);
     const body = updateTransactionSchema.parse(req.body);
 
-    await updateTransactionService(userId, transactionId, body);
+    const transaction = await updateTransactionService(
+      userId,
+      transactionId,
+      body
+    );
 
     return res.status(HTTPSTATUS.OK).json({
       message: "Transaction updated successfully",
+      transaction,
     });
   }
 );
 
-
 export const deleteTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
+
     const transactionId = transactionIdSchema.parse(req.params.id);
 
     await deleteTransactionService(userId, transactionId);
@@ -128,47 +205,59 @@ export const deleteTransactionController = asyncHandler(
   }
 );
 
-
 export const bulkDeleteTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
+
     const { transactionIds } = bulkDeleteTransactionSchema.parse(req.body);
 
     const result = await bulkDeleteTransactionService(userId, transactionIds);
 
     return res.status(HTTPSTATUS.OK).json({
-      message: "Transaction deleted successfully",
+      message: "Transactions deleted successfully",
       ...result,
     });
   }
 );
 
-
 export const bulkTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?._id;
+    const userId = getAuthUserId(req);
+
+    if (!userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Unauthorized",
+      });
+    }
+
     const { transactions } = bulkTransactionSchema.parse(req.body);
 
     const result = await bulkTransactionService(userId, transactions);
 
     return res.status(HTTPSTATUS.OK).json({
-      message: "Bulk transaction inserted successfully",
+      message: "Bulk transactions inserted successfully",
       ...result,
     });
   }
 );
 
-
 export const scanReceiptController = asyncHandler(
   async (req: Request, res: Response) => {
-    const file = req?.file;
+    const file = req.file;
 
     const result = await scanReceiptService(file);
 
     return res.status(HTTPSTATUS.OK).json({
-      message: "Reciept scanned successfully",
+      message: result?.error
+        ? "Receipt scan failed"
+        : "Receipt scanned successfully",
       data: result,
     });
   }
 );
-
