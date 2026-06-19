@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import { processRecurringTransactions } from './jobs/transaction.job';
 import { processReportJob } from './jobs/report.job';
 
-const scheduleJob=(name :string ,time:string,job:Function)=>{
+const scheduleJob = (name: string, time: string, job: Function) => {
     console.log(`Scheduling job: ${name} at ${time}`);
 
     return cron.schedule(time, async () => {
@@ -15,14 +15,10 @@ const scheduleJob=(name :string ,time:string,job:Function)=>{
         }
     },
     {
-       scheduled: true,
+       // Removed the 'scheduled: true' line
        timezone: "UTC",
-    }
-    );
+    });
 };
-
-    
-
 
 export const startJobs = () => {
   return [

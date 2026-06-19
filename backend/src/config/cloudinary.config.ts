@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { Env } from "./env.config";
 import multer from "multer";
+import { Request } from "express";
 
 cloudinary.config({
   cloud_name: Env.CLOUDINARY_CLOUD_NAME,
@@ -18,7 +19,7 @@ const STORAGE_PARAMS = {
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: (req, file) => ({
+  params: (req: Request, file: Express.Multer.File) => ({
     ...STORAGE_PARAMS,
   }),
 });
