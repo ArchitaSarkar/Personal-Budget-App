@@ -31,7 +31,7 @@ A powerful, full-stack finance management application designed to help users tak
 * **Authentication:** JWT & Bcrypt
 
 **Tools & Services:**
-* **AI Integration:** OpenAI API / Tesseract.js (for receipt scanning)
+* **AI Integration:** gemini API key
 * **Version Control:** Git & GitHub
 
 ## 📂 Project Structure
