@@ -69,7 +69,7 @@ Customize your user profile with profile picture upload (Cloudinary cloud storag
 ## 🌟 Key Features
 
 * **🔐 Secure Authentication:** Robust user authentication and registration with **JWT (JSON Web Tokens)** and bcrypt password hashing.
-* **🤖 AI-Powered Receipt Scanner:** Upload receipts (JPG, PNG, WebP up to 10MB) to automatically extract merchant, date, amount, category, and payment method via **Google Gemini API**.
+* **🤖 AI-Powered Receipt Scanner:** Upload receipts (JPG, PNG up to 10MB) to automatically extract merchant, date, amount, category, and payment method via **Google Gemini API**.
 * **📥 Bulk CSV Import:** Fast batch import modal with column mapping and schema validation.
 * **📊 Visual Financial Intelligence:** Dynamic charts, savings metrics, and monthly aggregations.
 * **🔄 Recurring Transactions:** Automate recurring expenses and income (Daily, Weekly, Monthly, Yearly).
@@ -83,8 +83,8 @@ Customize your user profile with profile picture upload (Cloudinary cloud storag
 **Frontend:**
 * **Framework:** React.js (Vite)
 * **Language:** TypeScript
-* **State Management:** Redux Toolkit & RTK Query
-* **Styling:** Tailwind CSS & Shadcn UI
+* **State Management:** Redux Toolkit 
+* **Styling:** Tailwind CSS 
 * **Charts:** Recharts
 * **Forms & Validation:** React Hook Form & Zod
 
@@ -114,7 +114,7 @@ Personal-Budget-App/
 ├── frontend/                 # React & Vite application
 │   ├── src/
 │   │   ├── components/       # UI components, data table & modal dialogs
-│   │   ├── features/         # RTK Query API slices & types
+│   │   ├── features/         
 │   │   ├── pages/            # Dashboard, Transactions, Reports, Settings
 │   │   └── lib/              # Currency & percentage formatters
 ├── screenshots/              # Application feature showcase screenshots
