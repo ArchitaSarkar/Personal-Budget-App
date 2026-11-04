@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",
@@ -80,6 +81,7 @@
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.39.0",
-    "vite": "^7.0.6"
+    "vite": "^7.0.6",
+    "vitest": "^5.1.0"
   }
 }

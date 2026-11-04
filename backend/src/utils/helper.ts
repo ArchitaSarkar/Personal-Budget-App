@@ -8,7 +8,6 @@ export function calulateNextReportDate(lastSentDate?: Date): Date { // Calculate
   const nextDate = startOfMonth(addMonths(lastSent, 1)); // Set to the start of the next month
   nextDate.setHours(0, 0, 0, 0);
 
-  console.log(nextDate, "nextDate");
   return nextDate;
 }
 

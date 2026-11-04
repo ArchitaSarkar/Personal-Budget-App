@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "ts-node-dev --files src/index.ts",
     "build": "tsc && node -e \"require('fs').copyFileSync('./package.json', './dist/package.json')\"",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -46,7 +47,11 @@
     "@types/node-cron": "^3.0.11",
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.3.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
   }
 }
