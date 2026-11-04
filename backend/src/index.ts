@@ -35,11 +35,31 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 
+const allowedOrigins = [
+  Env.FRONTEND_ORIGIN,
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://personal-budget-app-theta-nine.vercel.app",
+]
+  .flatMap((origin) => (origin ? origin.split(",") : []))
+  .map((origin) => origin.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+
 app.use(
-    cors({
-        origin: Env.FRONTEND_ORIGIN,
-        credentials: true,
-    })  
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      const cleanOrigin = origin.replace(/\/$/, "");
+      if (
+        allowedOrigins.includes(cleanOrigin) ||
+        cleanOrigin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    credentials: true,
+  })
 );
 
 app.get("/", (req: Request, res: Response) => {
