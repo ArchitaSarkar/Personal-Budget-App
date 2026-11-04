@@ -74,11 +74,26 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(row.getValue("createdAt"), "MMM dd, yyyy"),
+    cell: ({ row }) => (
+      <span className="whitespace-nowrap">
+        {format(row.getValue("createdAt"), "MMM dd, yyyy")}
+      </span>
+    ),
   },
   {
     accessorKey: "title",
     header: "Title",
+    cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      return (
+        <div
+          className="max-w-[140px] sm:max-w-[200px] md:max-w-[260px] truncate font-medium"
+          title={title}
+        >
+          {title}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "category",
@@ -94,7 +109,14 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     ),
     cell: ({ row }) => {
       const category = row.original.category;
-      return <div className="capitalize">{category}</div>;
+      return (
+        <div
+          className="capitalize max-w-[120px] sm:max-w-[160px] truncate"
+          title={category}
+        >
+          {category}
+        </div>
+      );
     },
   },
   {
@@ -111,10 +133,10 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     cell: ({ row }) => (
       <div className="capitalize">
         <span
-          className={`px-2 py-1 rounded-full text-xs ${
+          className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
             row.getValue("type") === _TRANSACTION_TYPE.INCOME
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-green-100 text-green-800 dark:bg-green-950/50 dark:text-green-300"
+              : "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300"
           }`}
         >
           {row.getValue("type")}
@@ -134,14 +156,17 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
 
       return (
         <div
-          className={`text-right font-medium ${
+          className={`text-right font-semibold whitespace-nowrap tabular-nums ${
             type === _TRANSACTION_TYPE.INCOME
-              ? "text-green-600"
+              ? "text-green-600 dark:text-green-400"
               : "text-destructive"
           }`}
+          title={formatCurrency(amount)}
         >
           {type === _TRANSACTION_TYPE.EXPENSE ? "-" : "+"}
-          {formatCurrency(amount)}
+          {formatCurrency(amount, {
+            decimalPlaces: amount >= 100_000 ? 0 : 2,
+          })}
         </div>
       );
     },
@@ -157,7 +182,11 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(row.original.date, "MMM dd, yyyy"),
+    cell: ({ row }) => (
+      <span className="whitespace-nowrap">
+        {format(row.original.date, "MMM dd, yyyy")}
+      </span>
+    ),
   },
   {
     accessorKey: "paymentMethod",
@@ -169,7 +198,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
       const paymentMethodWithoutUnderscore = paymentMethod
         ?.replace("_", " ")
         ?.toLowerCase();
-      return <div className="capitalize">{paymentMethodWithoutUnderscore}</div>;
+      return <div className="capitalize whitespace-nowrap">{paymentMethodWithoutUnderscore}</div>;
     },
   },
   {
@@ -238,7 +267,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
 // eslint-disable-next-line react-refresh/only-export-components
 const ActionsCell = ({ row }: { row: any }) => {
   //const isRecurring = row.original.isRecurring;
-  const transactionId = row.original.id;
+  const transactionId = (row.original._id || row.original.id) as string;
   const { onOpenDrawer } = useEditTransactionDrawer();
 
   const [duplicateTransaction, { isLoading: isDuplicating }] =

@@ -1,8 +1,14 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { HTTPSTATUS } from "../config/http.config";
+import { Env } from "../config/env.config";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { loginSchema, registerSchema } from "../validators/auth.validator";
-import { loginService, registerService } from "../services/auth.service";
+import {
+  loginService,
+  refreshTokenService,
+  registerService,
+} from "../services/auth.service";
 
 export const registerController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -31,6 +37,50 @@ export const loginController = asyncHandler(
       accessToken,
       expiresAt,
       reportSetting,
+    });
+  }
+);
+
+export const refreshTokenController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "No token provided",
+      });
+    }
+
+    const token = authHeader.split(" ")[1];
+    let payload: any;
+    try {
+      payload = jwt.verify(token, Env.JWT_SECRET, {
+        ignoreExpiration: true,
+      });
+    } catch (err) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Invalid token",
+      });
+    }
+
+    if (!payload?.userId) {
+      return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+        message: "Invalid token payload",
+      });
+    }
+
+    const result = await refreshTokenService(payload.userId);
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Token refreshed successfully",
+      ...result,
+    });
+  }
+);
+
+export const logoutController = asyncHandler(
+  async (req: Request, res: Response) => {
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Logged out successfully",
     });
   }
 );

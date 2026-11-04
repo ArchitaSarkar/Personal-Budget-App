@@ -105,7 +105,7 @@ const ImportTransactionModal = () => {
       <ImportIcon className="!w-5 !h-5" />
       Bulk Import
     </Button>
-  <DialogContent className="max-w-2xl min-h-[40vh]">
+  <DialogContent className="w-[95vw] max-w-2xl min-h-[40vh] max-h-[90vh] overflow-y-auto">
     {renderStep()}
   </DialogContent>
 </Dialog>

@@ -110,6 +110,7 @@ export const getAllTransactionController = asyncHandler(
     return res.status(HTTPSTATUS.OK).json({
       message: "Transaction fetched successfully",
       ...result,
+      transations: result.transactions,
     });
   }
 );
@@ -253,10 +254,15 @@ export const scanReceiptController = asyncHandler(
 
     const result = await scanReceiptService(file);
 
+    if (result?.error) {
+      return res.status(HTTPSTATUS.BAD_REQUEST).json({
+        message: result.error,
+        data: result,
+      });
+    }
+
     return res.status(HTTPSTATUS.OK).json({
-      message: result?.error
-        ? "Receipt scan failed"
-        : "Receipt scanned successfully",
+      message: "Receipt scanned successfully",
       data: result,
     });
   }

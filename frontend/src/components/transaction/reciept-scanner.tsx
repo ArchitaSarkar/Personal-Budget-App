@@ -43,6 +43,10 @@ const ReceiptScanner = ({
       toast.error("Please upload an image file");
       return;
     }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size exceeds 10MB limit. Please upload a smaller image.");
+      return;
+    }
     const formData = new FormData();
     formData.append("receipt", file);
 
@@ -65,13 +69,17 @@ const ReceiptScanner = ({
 
       aiScanReceipt(formData)
         .unwrap()
-        .then((res) => {
+        .then((res: any) => {
           updateProgress(100);
+          if (res?.data?.error) {
+            toast.error(res.data.error);
+            return;
+          }
           onScanComplete(res.data);
           toast.success("Receipt scanned successfully");
         })
-        .catch((error) => {
-          toast.error(error.data?.message || "Failed to scan receipt");
+        .catch((error: any) => {
+          toast.error(error.data?.message || error.data?.error || "Failed to scan receipt");
         })
         .finally(() => {
           clearInterval(interval);

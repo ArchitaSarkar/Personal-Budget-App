@@ -23,16 +23,16 @@ const Dashboard = () => {
         }
       >
         {/* Dashboard Main Section */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-6 gap-8">
-          <div className="lg:col-span-4">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-6 gap-6 sm:gap-8">
+          <div className="w-full min-w-0 lg:col-span-4">
             <DashboardDataChart dateRange={dateRange} />
           </div>
-          <div className="lg:col-span-2">
+          <div className="w-full min-w-0 lg:col-span-2">
             <ExpensePieChart dateRange={dateRange} />
           </div>
         </div>
         {/* Dashboard Recent Transactions */}
-        <div className="w-full mt-0">
+        <div className="w-full min-w-0 mt-0">
           <DashboardRecentTransactions />
         </div>
       </PageLayout>

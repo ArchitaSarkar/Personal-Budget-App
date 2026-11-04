@@ -150,12 +150,12 @@ const SummaryCard: FC<SummaryCardProps> = ({
 
   if (isLoading) {
     return (
-      <Card className="!border-none !border-0 !gap-0 !bg-white/5">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 !pb-5">
+      <Card className="!border-none !border-0 !gap-0 !bg-white/5 min-w-0 overflow-hidden">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 !pb-4">
           <Skeleton className="h-4 w-24 bg-white/30" />
         </CardHeader>
-        <CardContent className="space-y-8">
-          <Skeleton className="h-10.5 w-full bg-white/30" />
+        <CardContent className="space-y-6">
+          <Skeleton className="h-9 w-3/4 bg-white/30" />
           <div className="flex items-center gap-2">
             <Skeleton className="h-3 w-12 bg-white/30" />
             <Skeleton className="h-3 w-16 bg-white/30" />
@@ -165,71 +165,104 @@ const SummaryCard: FC<SummaryCardProps> = ({
     );
   }
 
-  const formatCountupValue = (val: number) => {
-    return isPercentageValue
-      ? formatPercentage(val, { decimalPlaces: 1 })
-      : formatCurrency(val, {
-          isExpense: cardType === "expenses",
-          showSign: cardType === "balance" && val < 0,
-        });
+  const absValue = Math.abs(value || 0);
+
+  // Responsive font size based on amount magnitude
+  const getFontSizeClass = () => {
+    if (isPercentageValue) return "text-2xl sm:text-3xl 2xl:text-4xl";
+    if (absValue >= 10_000_000) return "text-xl sm:text-2xl xl:text-xl 2xl:text-2xl";
+    if (absValue >= 1_000_000) return "text-xl sm:text-2xl xl:text-2xl 2xl:text-3xl";
+    if (absValue >= 100_000) return "text-2xl sm:text-3xl xl:text-2xl 2xl:text-3xl";
+    return "text-2xl sm:text-3xl lg:text-3xl 2xl:text-4xl";
   };
 
+  const formatCountupValue = (val: number) => {
+    if (isPercentageValue) {
+      return formatPercentage(val, { decimalPlaces: 1 });
+    }
+    const abs = Math.abs(val);
+    // For values >= 1 Crore (10M), use compact notation (e.g. ₹1.5Cr) to prevent card overflow
+    if (abs >= 10_000_000) {
+      return formatCurrency(val, {
+        compact: true,
+        isExpense: cardType === "expenses",
+        showSign: cardType === "balance" && val < 0,
+      });
+    }
+    // For large values >= 1 Lakh (100K), drop decimals to keep it clean and prevent overflow
+    return formatCurrency(val, {
+      decimalPlaces: abs >= 100_000 ? 0 : 2,
+      isExpense: cardType === "expenses",
+      showSign: cardType === "balance" && val < 0,
+    });
+  };
+
+  const fullFormattedTooltip = isPercentageValue
+    ? formatPercentage(value, { decimalPlaces: 2 })
+    : formatCurrency(value, {
+        isExpense: cardType === "expenses",
+        showSign: cardType === "balance" && value < 0,
+        decimalPlaces: 2,
+      });
+
   return (
-    <Card className="!border-none !border-0 !gap-0 !bg-white/5">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 !pb-5">
-        <CardTitle className="text-[15px] text-gray-300 font-medium">
+    <Card className="!border-none !border-0 !gap-0 !bg-white/5 min-w-0 overflow-hidden flex flex-col justify-between">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 !pb-4">
+        <CardTitle className="text-[14px] sm:text-[15px] text-gray-300 font-medium truncate">
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-4 min-w-0">
         <div
           className={cn(
-            "text-4xl font-bold",
+            "font-bold tracking-tight truncate leading-tight",
+            getFontSizeClass(),
             cardType === "balance" && value < 0 ? "text-red-400" : "text-white"
           )}
+          title={fullFormattedTooltip}
         >
           <CountUp
             start={0}
             end={value}
             preserveValue
-            decimals={2}
-            decimalPlaces={2}
+            decimals={absValue >= 100_000 ? 0 : 2}
+            decimalPlaces={absValue >= 100_000 ? 0 : 2}
             formattingFn={formatCountupValue}
           />
         </div>
 
-        <div className="text-sm text-muted-foreground mt-2">
+        <div className="text-xs sm:text-sm text-muted-foreground mt-2 min-w-0">
           {cardType === "savings" ? (
-            <div className="flex items-center gap-1.5">
-              <status.Icon className={cn("size-3.5", status.color)} />
-              <span className={status.color}>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <status.Icon className={cn("size-3.5 shrink-0", status.color)} />
+              <span className={cn("truncate", status.color)}>
                 {status.label} {value !== 0 && `(${formatPercentage(value)})`}
               </span>
               {status.description && (
-                <span className="text-gray-400 ml-1">
+                <span className="text-gray-400 truncate">
                   • {status.description}
                 </span>
               )}
             </div>
           ) : dateRange?.value === DateRangeEnum.ALL_TIME ? (
-            <span className="text-gray-400">Showing {dateRange?.label}</span>
+            <span className="text-gray-400 truncate block">Showing {dateRange?.label}</span>
           ) : value === 0 || status.label ? (
-            <div className="flex items-center gap-1.5">
-              <status.Icon className={cn("size-3.5", status.color)} />
-              <span className={status.color}>{status.label}</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <status.Icon className={cn("size-3.5 shrink-0", status.color)} />
+              <span className={cn("truncate", status.color)}>{status.label}</span>
               {status.description && (
-                <span className="text-gray-400">• {status.description}</span>
+                <span className="text-gray-400 truncate">• {status.description}</span>
               )}
               {!status.description && (
-                <span className="text-gray-400">• {dateRange?.label}</span>
+                <span className="text-gray-400 truncate">• {dateRange?.label}</span>
               )}
             </div>
           ) : showTrend ? (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 flex-wrap">
               {percentageChange !== 0 && (
                 <div
                   className={cn(
-                    "flex items-center gap-0.5",
+                    "flex items-center gap-0.5 shrink-0",
                     trendDirection === "positive"
                       ? "text-green-500"
                       : "text-red-500"
@@ -240,7 +273,6 @@ const SummaryCard: FC<SummaryCardProps> = ({
                   ) : (
                     <TrendingDownIcon className="size-3" />
                   )}
-{/*                   Math.abs(percentageChange || 0) */}
                   <span>
                     {formatPercentage(percentageChange || 0, {
                       showSign: percentageChange !== 0,
@@ -252,7 +284,7 @@ const SummaryCard: FC<SummaryCardProps> = ({
               )}
 
               {percentageChange === 0 && (
-                <div className="flex items-center gap-0.5 text-gray-400">
+                <div className="flex items-center gap-0.5 text-gray-400 shrink-0">
                   <TrendingDownIcon className="size-3" />
                   <span>
                     {formatPercentage(0, {
@@ -262,7 +294,7 @@ const SummaryCard: FC<SummaryCardProps> = ({
                   </span>
                 </div>
               )}
-              <span className="text-gray-400">• {dateRange?.label}</span>
+              <span className="text-gray-400 truncate">• {dateRange?.label}</span>
             </div>
           ) : null}
         </div>

@@ -1,4 +1,4 @@
-import * as React from "react";
+
 import { Label, Pie, PieChart, Cell } from "recharts";
 
 import {
@@ -51,22 +51,25 @@ const ExpensePieChart = (props: { dateRange?: DateRangeType }) => {
   // Custom legend component
   const CustomLegend = () => {
     return (
-      <div className="grid grid-cols-1 gap-x-4 gap-y-2 mt-4">
+      <div className="grid grid-cols-1 gap-x-4 gap-y-2 mt-4 max-h-[160px] overflow-y-auto pr-1">
         {categories.map((entry, index) => (
-          <div key={`legend-${index}`} className="flex items-center gap-2">
+          <div key={`legend-${index}`} className="flex items-center gap-2 min-w-0">
             <div
-              className="h-3 w-3 rounded-full"
+              className="h-3 w-3 rounded-full shrink-0"
               style={{ backgroundColor: COLORS[index % COLORS.length] }}
             ></div>
-            <div className="flex justify-between w-full">
-              <span className="text-xs font-medium truncate capitalize">
+            <div className="flex justify-between w-full min-w-0 items-center gap-2">
+              <span className="text-xs font-medium truncate capitalize flex-1" title={entry.name}>
                 {entry.name}
               </span>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground whitespace-nowrap">
-                  {formatCurrency(entry.value)}
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="text-xs text-muted-foreground whitespace-nowrap font-medium tabular-nums" title={formatCurrency(entry.value)}>
+                  {formatCurrency(entry.value, {
+                    compact: entry.value >= 10_000_000,
+                    decimalPlaces: entry.value >= 100_000 ? 0 : 2,
+                  })}
                 </span>
-                <span className="text-xs text-muted-foreground/60">
+                <span className="text-xs text-muted-foreground/60 shrink-0">
                   ({formatPercentage(entry.percentage, { decimalPlaces: 0 })})
                 </span>
               </div>
@@ -77,14 +80,19 @@ const ExpensePieChart = (props: { dateRange?: DateRangeType }) => {
     );
   };
 
+  const centerTotalFormatted = formatCurrency(totalSpent, {
+    compact: totalSpent >= 1_000_000,
+    decimalPlaces: totalSpent >= 100_000 ? 0 : 2,
+  });
+
   return (
-    <Card className="!shadow-none border-1 border-gray-100 dark:border-border">
+    <Card className="!shadow-none border-1 border-gray-100 dark:border-border min-w-0 overflow-hidden">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Expenses Breakdown</CardTitle>
-        <CardDescription>Total expenses {dateRange?.label}</CardDescription>
+        <CardTitle className="text-lg truncate">Expenses Breakdown</CardTitle>
+        <CardDescription className="truncate">Total expenses {dateRange?.label}</CardDescription>
       </CardHeader>
-      <CardContent className="h-[313px]">
-        <div className=" w-full">
+      <CardContent className="min-h-[340px] pb-6">
+        <div className="w-full min-w-0">
           {categories?.length === 0 ? (
             <EmptyState
               title="No expenses found"
@@ -93,7 +101,7 @@ const ExpensePieChart = (props: { dateRange?: DateRangeType }) => {
           ) : (
             <ChartContainer
               config={chartConfig}
-              className="mx-auto aspect-square h-[300px]"
+              className="mx-auto aspect-square h-[300px] max-w-full"
             >
               <PieChart>
                 <ChartTooltip
@@ -131,9 +139,13 @@ const ExpensePieChart = (props: { dateRange?: DateRangeType }) => {
                             <tspan
                               x={viewBox.cx}
                               y={viewBox.cy}
-                              className="fill-foreground text-2xl font-bold"
+                              className={`fill-foreground font-bold ${
+                                totalSpent >= 10_000_000
+                                  ? "text-lg"
+                                  : "text-xl sm:text-2xl"
+                              }`}
                             >
-                              ${totalSpent.toLocaleString()}
+                              {centerTotalFormatted}
                             </tspan>
                             <tspan
                               x={viewBox.cx}

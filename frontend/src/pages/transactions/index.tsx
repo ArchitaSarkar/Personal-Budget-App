@@ -15,14 +15,14 @@ export default function Transactions() {
       subtitle="Showing all transactions"
       addMarginTop
       rightAction={
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <ImportTransactionModal />
           <AddTransactionDrawer />
         </div>
       }
     >
       <Card className="border-0 shadow-none">
-        <CardContent className="pt-2">
+        <CardContent className="pt-2 px-0 sm:px-6">
           <TransactionTable pageSize={20} />
         </CardContent>
       </Card>

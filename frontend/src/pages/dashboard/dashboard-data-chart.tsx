@@ -58,27 +58,27 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
   }
 
   return (
-    <Card className="!shadow-none border-1 border-gray-100 dark:border-border !pt-0">
+    <Card className="!shadow-none border-1 border-gray-100 dark:border-border !pt-0 min-w-0 overflow-hidden">
       <CardHeader
         className="flex flex-col items-stretch !space-y-0 border-b border-gray-100
-      dark:border-border !p-0 pr-1 sm:flex-row"
+      dark:border-border !p-0 sm:flex-row"
       >
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-0 sm:py-0">
-          <CardTitle className="text-lg">Transaction Overview</CardTitle>
-          <CardDescription>
+        <div className="flex flex-1 flex-col justify-center gap-1 px-4 sm:px-6 py-4 sm:py-0 min-w-0">
+          <CardTitle className="text-lg truncate">Transaction Overview</CardTitle>
+          <CardDescription className="truncate">
             <span>Showing total transactions {dateRange?.label}</span>
           </CardDescription>
         </div>
-        <div className="flex">
+        <div className="flex border-t sm:border-t-0 border-gray-100 dark:border-border">
           {TRANSACTION_TYPES.map((key) => {
             const chart = key as keyof typeof chartConfig;
             return (
               <div
                 key={chart}
-                className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-center even:border-l 
-                sm:border-l border-gray-100 dark:border-border sm:px-4 sm:py-6 min-w-36"
+                className="flex flex-1 flex-col justify-center gap-1 px-4 py-3 text-center even:border-l 
+                sm:border-l border-gray-100 dark:border-border sm:px-4 sm:py-6 min-w-28 sm:min-w-36"
               >
-                <span className="w-full block text-xs text-muted-foreground">
+                <span className="w-full block text-xs text-muted-foreground truncate">
                   No of {chartConfig[chart].label}
                 </span>
                 <span className="flex items-center justify-center gap-2 text-lg font-semibold leading-none sm:text-3xl">
@@ -96,7 +96,7 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
           })}
         </div>
       </CardHeader>
-      <CardContent className="px-2 pt-2 sm:px-6 sm:pt-2 h-[300px]">
+      <CardContent className="px-2 pt-2 sm:px-6 sm:pt-2 h-[300px] w-full min-w-0 overflow-hidden">
         {chartData?.length === 0 ? (
           <EmptyState
             title="No transaction data"

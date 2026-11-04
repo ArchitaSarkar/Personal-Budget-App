@@ -14,18 +14,45 @@ import { signJwtToken } from "../utils/jwt";
 export const registerService = async (body: RegisterSchemaType) => {
   const { email } = body;
 
-  const session = await mongoose.startSession();
+  const existingUser = await UserModel.findOne({ email });
+  if (existingUser) throw new UnauthorizedException("User already exists");
+
+  let createdUser: any;
 
   try {
-    await session.withTransaction(async () => {
-      const existingUser = await UserModel.findOne({ email }).session(session);
-      if (existingUser) throw new UnauthorizedException("User already exists");
+    const session = await mongoose.startSession();
+    try {
+      await session.withTransaction(async () => {
+        const newUser = new UserModel({
+          ...body,
+        });
 
+        await newUser.save({ session });
+
+        const reportSetting = new ReportSettingModel({
+          userId: newUser._id,
+          frequency: ReportFrequencyEnum.MONTHLY,
+          isEnabled: true,
+          nextReportDate: calulateNextReportDate(),
+          lastSentDate: null,
+        });
+        await reportSetting.save({ session });
+
+        createdUser = newUser.omitPassword();
+      });
+    } finally {
+      await session.endSession();
+    }
+  } catch (txError: any) {
+    if (
+      txError?.message?.includes("replica set") ||
+      txError?.message?.includes("Transaction numbers are only allowed")
+    ) {
       const newUser = new UserModel({
         ...body,
       });
 
-      await newUser.save({ session });
+      await newUser.save();
 
       const reportSetting = new ReportSettingModel({
         userId: newUser._id,
@@ -34,15 +61,15 @@ export const registerService = async (body: RegisterSchemaType) => {
         nextReportDate: calulateNextReportDate(),
         lastSentDate: null,
       });
-      await reportSetting.save({ session });
+      await reportSetting.save();
 
-      return { user: newUser.omitPassword() };
-    });
-  } catch (error) {
-    throw error;
-  } finally {
-    await session.endSession();
+      createdUser = newUser.omitPassword();
+    } else {
+      throw txError;
+    }
   }
+
+  return { user: createdUser };
 };
 
 export const loginService = async (body: LoginSchemaType) => {
@@ -69,5 +96,17 @@ export const loginService = async (body: LoginSchemaType) => {
     accessToken: token,
     expiresAt,
     reportSetting,
+  };
+};
+
+export const refreshTokenService = async (userId: string) => {
+  const user = await UserModel.findById(userId);
+  if (!user) throw new NotFoundException("User not found");
+
+  const { token, expiresAt } = signJwtToken({ userId: user.id });
+
+  return {
+    accessToken: token,
+    expiresAt,
   };
 };

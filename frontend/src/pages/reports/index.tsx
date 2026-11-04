@@ -19,7 +19,7 @@ export default function Reports() {
       }
     >
         <Card className="border shadow-none">
-          <CardContent>
+          <CardContent className="px-0 sm:px-6 py-4">
            <ReportTable />
           </CardContent>
         </Card>

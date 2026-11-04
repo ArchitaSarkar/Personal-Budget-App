@@ -139,13 +139,17 @@ const TransactionForm = (props: {
   );
 
   const handleScanComplete = (data: AIScanReceiptData) => {
+    if (!data) return;
     form.reset({
       ...form.getValues(),
       title: data.title || "",
-      amount: data.amount.toString(),
+      amount:
+        data.amount !== undefined && data.amount !== null
+          ? data.amount.toString()
+          : "",
       type: data.type || _TRANSACTION_TYPE.EXPENSE,
       category: data.category?.toLowerCase() || "",
-      date: new Date(data.date),
+      date: data.date ? new Date(data.date) : new Date(),
       paymentMethod: data.paymentMethod || "",
       isRecurring: false,
       frequency: null,
@@ -295,8 +299,8 @@ const TransactionForm = (props: {
                         {...field}
                         disabled={isScanning}
                         onValueChange={(value) => field.onChange(value || "")}
-                        placeholder="$0.00"
-                        prefix="$"
+                        placeholder="₹0.00"
+                        prefix="₹"
                       />
                     </div>
                   </FormControl>

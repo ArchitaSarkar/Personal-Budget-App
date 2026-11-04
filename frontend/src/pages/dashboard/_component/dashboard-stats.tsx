@@ -3,15 +3,14 @@ import SummaryCard from "./summary-card";
 import { DateRangeType } from "@/components/date-range-select";
 
 const DashboardStats = ({ dateRange }: { dateRange?: DateRangeType }) => {
-  const { data, isFetching } = useSummaryAnalyticsQuery(
-    { preset: dateRange?.value },
-    { skip: !dateRange }
-  );
+  const { data, isFetching } = useSummaryAnalyticsQuery({
+    preset: dateRange?.value,
+  });
   const summaryData = data?.data;
 
   return (
-    <div className="flex flex-row items-center">
-      <div className="flex-1 lg:flex-[1] grid grid-cols-1 lg:grid-cols-4 gap-4">
+    <div className="w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
         <SummaryCard
           title="Available Balance"
           value={summaryData?.availableBalance}

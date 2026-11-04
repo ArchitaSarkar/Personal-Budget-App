@@ -42,33 +42,29 @@ app.use(
     })  
 );
 
-app.get("/",(async(req: Request, res: Response, next: NextFunction) => {
-   
-     throw new BadRequestException("This is a test error");
-     res.status(HTTPSTATUS.OK).json({
-         message: "Welcome to Finance App Backend",
-     
-     });
-   
-})
-);
-app.use(errorHandler);
-
+app.get("/", (req: Request, res: Response) => {
+  res.status(HTTPSTATUS.OK).json({
+    message: "Welcome to Finance App Backend",
+    status: "healthy",
+  });
+});
 
 app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/user`, passportAuthenticateJwt, userRoutes);
-app.use(`${BASE_PATH}/transaction`, passportAuthenticateJwt,transactionRoutes);
-app.use(`${BASE_PATH}/report`, passportAuthenticateJwt,reportRoutes);
+app.use(`${BASE_PATH}/transaction`, passportAuthenticateJwt, transactionRoutes);
 app.use(`${BASE_PATH}/report`, passportAuthenticateJwt, reportRoutes);
 app.use(`${BASE_PATH}/analytics`, passportAuthenticateJwt, analyticsRoutes);
 
+app.use(errorHandler);
 
-app.listen(Env.PORT,async () => {
-    await connctDatabase();
- 
-    if(Env.NODE_ENV==="development"){
-        await initializeCrons();
-    }
+const startServer = async () => {
+  await connctDatabase();
 
+  await initializeCrons();
+
+  app.listen(Env.PORT, () => {
     console.log(`Server is running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
-});
+  });
+};
+
+startServer();

@@ -266,6 +266,7 @@ export const updateTransactionService = async (
       paymentMethod: body.paymentMethod,
     }),
     ...(body.amount !== undefined && { amount: Number(body.amount) }),
+    ...(body.receiptUrl !== undefined && { receiptUrl: body.receiptUrl }),
 
     date,
     isRecurring,

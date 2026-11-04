@@ -14,7 +14,7 @@ import { PROTECTED_ROUTES } from "@/routes/common/routePath";
 
 const DashboardRecentTransactions = () => {
   return (
-    <Card className="!shadow-none border-1 border-gray-100 dark:border-border">
+    <Card className="!shadow-none border-1 border-gray-100 dark:border-border min-w-0 overflow-hidden">
       <CardHeader className="!pb-0">
         <CardTitle className="text-xl">Recent Transactions</CardTitle>
         <CardDescription>Showing all recent transactions</CardDescription>
@@ -29,7 +29,7 @@ const DashboardRecentTransactions = () => {
         </CardAction>
         <Separator className="mt-3 !bg-gray-100 dark:!bg-gray-800" />
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 px-2 sm:px-6 overflow-x-auto">
         <TransactionTable pageSize={10} isShowPagination={false} />
       </CardContent>
     </Card>

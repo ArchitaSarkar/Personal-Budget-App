@@ -24,7 +24,7 @@ const Settings = () => {
       addMarginTop
     >
       <Card className="border shadow-none">
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <div
             className="flex flex-col space-y-8 lg:flex-row lg:space-x-12
          lg:space-y-0 pb-10 pt-2"
@@ -46,7 +46,7 @@ const Settings = () => {
 function SidebarNav({ items }: ItemPropsType) {
   const { pathname } = useLocation();
   return (
-    <nav className={"flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1"}>
+    <nav className={"flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 overflow-x-auto pb-1"}>
       {items.map((item) => (
         <Link
           key={item.href}

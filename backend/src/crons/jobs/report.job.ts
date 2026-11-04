@@ -15,8 +15,8 @@ export const processReportJob = async () => {
 
   //Today july 1, then run report for -> june 1 - 30 
 //Get Last Month because this will run on the first of the month
-  const from = startOfMonth(subMonths(now, 3));
-  const to = endOfMonth(subMonths(now, 3));
+  const from = startOfMonth(subMonths(now, 1));
+  const to = endOfMonth(subMonths(now, 1));
 
   // const from = "2025-04-01T23:00:00.000Z";
   // const to = "2025-04-T23:00:00.000Z";
@@ -132,8 +132,8 @@ export const processReportJob = async () => {
             }
 
             await Promise.all([
-              ReportModel.bulkWrite(bulkReports, { ordered: false }),
-              ReportSettingModel.bulkWrite(bulkSettings, { ordered: false }),
+              ReportModel.bulkWrite(bulkReports, { ordered: false, session }),
+              ReportSettingModel.bulkWrite(bulkSettings, { ordered: false, session }),
             ]);
           },
           {

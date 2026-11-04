@@ -30,7 +30,7 @@ const PageLayout = ({ children, className,
           renderPageHeader={renderPageHeader}
         />
       )}
-    <div className={cn("w-full max-w-[var(--max-width)] mx-auto pt-8",
+    <div className={cn("w-full max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 pt-8",
       addMarginTop && "-mt-20",
       className)}>
       {children}

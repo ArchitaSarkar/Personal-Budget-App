@@ -1,0 +1,16 @@
+title,amount,type,date,category,paymentMethod,description
+Monthly Salary,75000,INCOME,2026-11-01,Income,BANK_TRANSFER,Monthly salary deposit from Tech Corp
+Freelance Web Project,22000,INCOME,2026-11-02,Income,BANK_TRANSFER,Client payment for landing page redesign
+Apartment Rent,18000,EXPENSE,2026-11-01,Housing & Rent,AUTO_DEBIT,Monthly apartment rent payment
+Supermarket Groceries,3450,EXPENSE,2026-11-02,Groceries,CARD,Weekly grocery shopping at DMart
+Electricity Bill,1850,EXPENSE,2026-11-03,Utilities,MOBILE_PAYMENT,State electricity board bill payment
+High-speed WiFi Internet,999,EXPENSE,2026-11-03,Utilities,CARD,Airtel broadband monthly subscription
+Dinner with Friends,1450,EXPENSE,2026-11-03,Dining & Restaurants,MOBILE_PAYMENT,Dinner at Barbeque Nation
+Metro Card Recharge,1000,EXPENSE,2026-11-04,Transportation,MOBILE_PAYMENT,Monthly metro transit card top-up
+Mutual Fund SIP,5000,EXPENSE,2026-11-04,Investments,AUTO_DEBIT,Nifty 50 Index Fund monthly SIP
+Pharmacy & Medicine,650,EXPENSE,2026-11-04,Healthcare,CARD,Prescription medicines from Apollo Pharmacy
+Office Lunch,280,EXPENSE,2026-11-04,Dining & Restaurants,CASH,Lunch at office cafeteria
+Weekend Movie & Snacks,850,EXPENSE,2026-11-04,Entertainment,CARD,PVR movie tickets and popcorn
+Coffee with Colleague,320,EXPENSE,2026-11-04,Dining & Restaurants,CARD,Third Wave Coffee meetup
+Fuel / Petrol,2000,EXPENSE,2026-11-04,Transportation,CARD,Full tank fuel at Indian Oil
+Stock Dividend,1200,INCOME,2026-11-04,Investments,BANK_TRANSFER,Quarterly stock dividend credit

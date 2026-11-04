@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema , Document} from "mongoose";
 import { convertToCents, convertToDollarUnit } from "../utils/format-currency";
 
 export enum TransactionStatusEnum {

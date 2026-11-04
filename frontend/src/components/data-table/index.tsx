@@ -144,15 +144,15 @@ export function DataTable<TData>({
   return (
     <div className="w-full">
       {/* Top Bar: Search & Filters */}
-      <div className="flex flex-wrap justify-between items-center gap-2 pb-4">
-        <div className="flex items-center gap-2 flex-wrap flex-1">
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 pb-4">
+        <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0">
           {showSearch && (
             <Input
               placeholder={searchPlaceholder}
               value={searchTerm}
               disabled={isLoading}
               onChange={(e) => handleSearch(e.target.value)}
-              className="max-w-sm"
+              className="w-full sm:max-w-xs"
             />
           )}
           {filters.map(({ key, label, options }) => (
@@ -162,7 +162,7 @@ export function DataTable<TData>({
               disabled={isLoading}
               onValueChange={(value) => handleFilterChange(key, value)}
             >
-              <SelectTrigger className="min-w-[160px]">
+              <SelectTrigger className="w-full sm:w-auto min-w-[140px] sm:min-w-[160px]">
                 <div className="flex items-center gap-2">
                   <PlusCircleIcon className="h-4 w-4 opacity-50" />
                   <SelectValue placeholder={label} />
@@ -199,6 +199,7 @@ export function DataTable<TData>({
             variant="destructive"
             size="sm"
             onClick={handleDelete}
+            className="w-full sm:w-auto self-end"
           >
             <Trash className="h-4 w-4 mr-1" />
             Delete ({selectedRows.length})
@@ -208,7 +209,7 @@ export function DataTable<TData>({
       </div>
 
       {/* Table */}
-      <div className={cn("rounded-md border overflow-x-auto", className)}>
+      <div className={cn("rounded-md border overflow-x-auto w-full max-w-full", className)}>
         {isLoading ? (
           <TableSkeleton columns={6} rows={20} />
         ) : (
@@ -257,7 +258,10 @@ export function DataTable<TData>({
                     colSpan={columns.length}
                     className="text-center h-24"
                   >
-                    <EmptyState title="No records found" description="" />
+                    <EmptyState
+                      title="No transactions found"
+                      description="Create a new transaction or import a CSV file to get started."
+                    />
                   </TableCell>
                 </TableRow>
               )}
